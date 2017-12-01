@@ -10823,7 +10823,7 @@
         "multi": false,
         "name": "node",
         "options": [],
-        "query": "label_values(node_boot_time{job=\"HostsMetrics\"}, instance)",
+        "query": "label_values(node_boot_time, instance)",
         "refresh": 1,
         "regex": "/([^:]+):.*/",
         "sort": 0,
