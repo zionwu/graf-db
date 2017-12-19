@@ -1,27 +1,66 @@
 {
-  "id": 3,
-  "title": "Rancher Stats",
-  "originalTitle": "Rancher Stats",
-  "tags": [
-    "Rancher"
+  "__inputs": [
+    {
+      "name": "DS_PROMETHEUS",
+      "label": "Prometheus",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "prometheus",
+      "pluginName": "Prometheus"
+    }
   ],
-  "style": "dark",
-  "timezone": "browser",
+  "__requires": [
+    {
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "4.2.0"
+    },
+    {
+      "type": "panel",
+      "id": "graph",
+      "name": "Graph",
+      "version": ""
+    },
+    {
+      "type": "datasource",
+      "id": "prometheus",
+      "name": "Prometheus",
+      "version": "1.0.0"
+    },
+    {
+      "type": "panel",
+      "id": "singlestat",
+      "name": "Singlestat",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "text",
+      "name": "Text",
+      "version": ""
+    }
+  ],
+  "annotations": {
+    "list": []
+  },
   "editable": true,
+  "gnetId": null,
+  "graphTooltip": 0,
   "hideControls": false,
-  "sharedCrosshair": false,
+  "id": null,
+  "links": [],
+  "refresh": "5s",
   "rows": [
     {
       "collapse": false,
-      "editable": true,
       "height": "25px",
       "panels": [
         {
-          "content": "# Rancher Statistics\n\nThis dashboard exports metrics from within the rancher server container its-self. This is done through modifying the `graphite.host` value in the rancher API. This is for now a manual step and requires a restart of the rancher server container to take affect. Instructions on how to do this can be found [here](https://github.com/infinityworks/Guide_Rancher_Monitoring).\n",
+          "content": "# Rancher Statistics\n\nThis dashboard exports metrics from within the rancher server JVM its-self. Instructions on how to do this can be found [here](https://github.com/infinityworksltd/Guide_Rancher_Monitoring).\n",
           "editable": true,
           "error": false,
           "id": 16,
-          "isNew": true,
           "links": [],
           "mode": "markdown",
           "span": 12,
@@ -31,11 +70,15 @@
           "type": "text"
         }
       ],
-      "title": "Text"
+      "repeat": null,
+      "repeatIteration": null,
+      "repeatRowId": null,
+      "showTitle": false,
+      "title": "Text",
+      "titleSize": "h6"
     },
     {
       "collapse": false,
-      "editable": true,
       "height": "250px",
       "panels": [
         {
@@ -47,7 +90,7 @@
             "rgba(237, 129, 40, 0.89)",
             "rgba(245, 54, 54, 0.9)"
           ],
-          "datasource": "influxdb",
+          "datasource": "${DS_PROMETHEUS}",
           "editable": true,
           "error": false,
           "format": "none",
@@ -61,6 +104,17 @@
           "id": 7,
           "interval": null,
           "links": [],
+          "mappingType": 1,
+          "mappingTypes": [
+            {
+              "name": "value to text",
+              "value": 1
+            },
+            {
+              "name": "range to text",
+              "value": 2
+            }
+          ],
           "maxDataPoints": 100,
           "nullPointMode": "connected",
           "nullText": null,
@@ -68,6 +122,13 @@
           "postfixFontSize": "50%",
           "prefix": "",
           "prefixFontSize": "50%",
+          "rangeMaps": [
+            {
+              "from": "null",
+              "text": "N/A",
+              "to": "null"
+            }
+          ],
           "span": 3,
           "sparkline": {
             "fillColor": "rgba(31, 118, 189, 0.18)",
@@ -80,7 +141,7 @@
               "calculatedInterval": "1m",
               "dsType": "influxdb",
               "errors": {},
-              "expr": "",
+              "expr": "cattle_jvm_os_SystemLoadAverage{instance=~\"$node\"}",
               "groupBy": [
                 {
                   "params": [
@@ -117,6 +178,7 @@
                   }
                 ]
               ],
+              "step": 60,
               "tags": [],
               "target": "movingAverage(servers.944b1a09387f.jvm.os.SystemLoadAverage, '30min')"
             }
@@ -144,7 +206,7 @@
             "rgba(237, 129, 40, 0.89)",
             "rgba(50, 172, 45, 0.97)"
           ],
-          "datasource": "influxdb",
+          "datasource": "${DS_PROMETHEUS}",
           "decimals": 1,
           "editable": true,
           "error": false,
@@ -159,6 +221,17 @@
           "id": 10,
           "interval": null,
           "links": [],
+          "mappingType": 1,
+          "mappingTypes": [
+            {
+              "name": "value to text",
+              "value": 1
+            },
+            {
+              "name": "range to text",
+              "value": 2
+            }
+          ],
           "maxDataPoints": 100,
           "nullPointMode": "connected",
           "nullText": null,
@@ -166,6 +239,13 @@
           "postfixFontSize": "50%",
           "prefix": "",
           "prefixFontSize": "50%",
+          "rangeMaps": [
+            {
+              "from": "null",
+              "text": "N/A",
+              "to": "null"
+            }
+          ],
           "span": 3,
           "sparkline": {
             "fillColor": "rgba(31, 118, 189, 0.18)",
@@ -178,7 +258,7 @@
               "calculatedInterval": "1m",
               "dsType": "influxdb",
               "errors": {},
-              "expr": "",
+              "expr": "cattle_jvm_runtime_Uptime{instance=~\"$node\"}",
               "groupBy": [
                 {
                   "params": [
@@ -196,7 +276,7 @@
               "hide": false,
               "intervalFactor": 2,
               "measurement": "jvm.runtime.Uptime",
-              "metric": "",
+              "metric": "jvm_runtime_Uptime",
               "policy": "default",
               "prometheusLink": "http://10.196.94.100:9090/graph#%5B%7B%22expr%22%3A%22%22%2C%22range_input%22%3A%223600s%22%2C%22end_input%22%3A%222015-11-10%2016%3A24%22%2C%22step_input%22%3A%22%22%2C%22tab%22%3A0%7D%5D",
               "query": "SELECT mean(\"value\") FROM \"jvm.runtime.Uptime\" WHERE $timeFilter GROUP BY time($interval) fill(null)",
@@ -216,6 +296,7 @@
                   }
                 ]
               ],
+              "step": 60,
               "tags": [],
               "target": "servers.944b1a09387f.jvm.runtime.Uptime"
             }
@@ -237,16 +318,11 @@
         {
           "aliasColors": {},
           "bars": true,
-          "datasource": "influxdb",
+          "datasource": "${DS_PROMETHEUS}",
           "editable": true,
           "error": false,
           "fill": 2,
-          "grid": {
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
-          },
+          "grid": {},
           "id": 8,
           "interval": "> 10s",
           "legend": {
@@ -255,7 +331,7 @@
             "hideEmpty": true,
             "max": false,
             "min": false,
-            "show": true,
+            "show": false,
             "total": false,
             "values": false
           },
@@ -273,106 +349,37 @@
           "steppedLine": false,
           "targets": [
             {
-              "calculatedInterval": "2s",
-              "dsType": "influxdb",
-              "errors": {},
-              "expr": "",
-              "groupBy": [
-                {
-                  "params": [
-                    "$interval"
-                  ],
-                  "type": "time"
-                },
-                {
-                  "params": [
-                    "null"
-                  ],
-                  "type": "fill"
-                }
-              ],
+              "expr": "cattle_jvm_memory_HeapMemoryUsage_used{instance=~\"$node\"}",
               "intervalFactor": 2,
-              "measurement": "jvm.memory.HeapMemoryUsage.used",
-              "metric": "",
-              "policy": "default",
-              "prometheusLink": "http://10.196.94.100:9090/graph#%5B%7B%22expr%22%3A%22%22%2C%22range_input%22%3A%223601s%22%2C%22end_input%22%3A%222015-11-10%2016%3A26%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Afalse%2C%22tab%22%3A0%7D%5D",
-              "query": "SELECT mean(\"value\") FROM \"jvm.memory.HeapMemoryUsage.used\" WHERE $timeFilter GROUP BY time($interval) fill(null)",
+              "metric": "jvm_mem",
               "refId": "A",
-              "resultFormat": "time_series",
-              "select": [
-                [
-                  {
-                    "params": [
-                      "value"
-                    ],
-                    "type": "field"
-                  },
-                  {
-                    "params": [],
-                    "type": "mean"
-                  }
-                ]
-              ],
-              "tags": [],
-              "target": "aliasByMetric(summarize(servers.*.jvm.memory.HeapMemoryUsage.*, '30m', 'avg', false))"
+              "step": 20
             },
             {
-              "calculatedInterval": "2s",
-              "dsType": "influxdb",
-              "errors": {},
-              "expr": "",
-              "groupBy": [
-                {
-                  "params": [
-                    "$interval"
-                  ],
-                  "type": "time"
-                },
-                {
-                  "params": [
-                    "null"
-                  ],
-                  "type": "fill"
-                }
-              ],
+              "expr": "cattle_jvm_memory_HeapMemoryUsage_committed{instance=~\"$node\"}",
               "intervalFactor": 2,
-              "measurement": "jvm.memory.HeapMemoryUsage.committed",
-              "metric": "",
-              "policy": "default",
-              "prometheusLink": "http://10.196.94.100:9090/graph#%5B%7B%22expr%22%3A%22%22%2C%22range_input%22%3A%223601s%22%2C%22end_input%22%3A%222015-11-10%2016%3A26%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Afalse%2C%22tab%22%3A0%7D%5D",
-              "query": "SELECT mean(\"value\") FROM \"jvm.memory.HeapMemoryUsage.committed\" WHERE $timeFilter GROUP BY time($interval) fill(null)",
+              "metric": "jvm_memory_HeapMemoryUsage_committed",
               "refId": "B",
-              "resultFormat": "time_series",
-              "select": [
-                [
-                  {
-                    "params": [
-                      "value"
-                    ],
-                    "type": "field"
-                  },
-                  {
-                    "params": [],
-                    "type": "mean"
-                  }
-                ]
-              ],
-              "tags": [],
-              "target": "aliasByMetric(summarize(servers.*.jvm.memory.HeapMemoryUsage.*, '30m', 'avg', false))"
+              "step": 20
             }
           ],
+          "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
           "title": "JVM Heap Usage",
           "tooltip": {
             "msResolution": false,
             "shared": true,
+            "sort": 0,
             "value_type": "cumulative"
           },
           "transparent": false,
           "type": "graph",
           "xaxis": {
-            "show": true
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
           },
           "yaxes": [
             {
@@ -394,11 +401,15 @@
           ]
         }
       ],
-      "title": "Stats 1"
+      "repeat": null,
+      "repeatIteration": null,
+      "repeatRowId": null,
+      "showTitle": false,
+      "title": "Stats 1",
+      "titleSize": "h6"
     },
     {
       "collapse": false,
-      "editable": true,
       "height": "250px",
       "panels": [
         {
@@ -410,7 +421,7 @@
             "rgba(237, 129, 40, 0.89)",
             "rgba(50, 172, 45, 0.97)"
           ],
-          "datasource": "influxdb",
+          "datasource": "${DS_PROMETHEUS}",
           "editable": true,
           "error": false,
           "format": "none",
@@ -424,6 +435,17 @@
           "id": 15,
           "interval": null,
           "links": [],
+          "mappingType": 1,
+          "mappingTypes": [
+            {
+              "name": "value to text",
+              "value": 1
+            },
+            {
+              "name": "range to text",
+              "value": 2
+            }
+          ],
           "maxDataPoints": 100,
           "nullPointMode": "connected",
           "nullText": null,
@@ -431,6 +453,13 @@
           "postfixFontSize": "50%",
           "prefix": "",
           "prefixFontSize": "50%",
+          "rangeMaps": [
+            {
+              "from": "null",
+              "text": "N/A",
+              "to": "null"
+            }
+          ],
           "span": 4,
           "sparkline": {
             "fillColor": "rgba(31, 118, 189, 0.18)",
@@ -443,7 +472,7 @@
               "calculatedInterval": "10m",
               "dsType": "influxdb",
               "errors": {},
-              "expr": "",
+              "expr": "cattle_jvm_gc_ConcurrentMarkSweep_CollectionCount{instance=~\"$node\"}",
               "groupBy": [
                 {
                   "params": [
@@ -460,7 +489,7 @@
               ],
               "intervalFactor": 2,
               "measurement": "jvm.gc.MarkSweepCompact.CollectionCount",
-              "metric": "",
+              "metric": "jvm_gc_ConcurrentMarkSweep_CollectionCount",
               "policy": "default",
               "prometheusLink": "http://10.196.94.100:9090/graph#%5B%7B%22expr%22%3A%22%22%2C%22range_input%22%3A%2221600s%22%2C%22end_input%22%3A%222015-11-11%2010%3A44%22%2C%22step_input%22%3A%22%22%2C%22tab%22%3A0%7D%5D",
               "query": "SELECT mean(\"value\") FROM \"jvm.gc.MarkSweepCompact.CollectionCount\" WHERE $timeFilter GROUP BY time($interval) fill(null)",
@@ -480,6 +509,7 @@
                   }
                 ]
               ],
+              "step": 60,
               "tags": [],
               "target": "derivative(servers.944b1a09387f.jvm.gc.PS_MarkSweep.CollectionCount)"
             }
@@ -499,36 +529,32 @@
         },
         {
           "aliasColors": {},
-          "bars": true,
-          "datasource": "influxdb",
+          "bars": false,
+          "datasource": "${DS_PROMETHEUS}",
           "editable": true,
           "error": false,
-          "fill": 1,
-          "grid": {
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
-          },
+          "fill": 0,
+          "grid": {},
           "id": 1,
           "legend": {
-            "alignAsTable": false,
+            "alignAsTable": true,
             "avg": false,
             "current": true,
             "hideEmpty": false,
             "hideZero": false,
             "max": false,
             "min": false,
-            "show": true,
+            "rightSide": true,
+            "show": false,
             "total": false,
             "values": true
           },
-          "lines": false,
+          "lines": true,
           "linewidth": 2,
           "links": [],
           "nullPointMode": "connected",
           "percentage": false,
-          "pointradius": 5,
+          "pointradius": 1,
           "points": false,
           "renderer": "flot",
           "seriesOverrides": [],
@@ -541,7 +567,7 @@
               "datasourceErrors": {},
               "dsType": "influxdb",
               "errors": {},
-              "expr": "",
+              "expr": "{__name__=~\".*metric.*failed.*total\", instance=~\"$node\"}",
               "groupBy": [
                 {
                   "params": [
@@ -557,8 +583,9 @@
                 }
               ],
               "intervalFactor": 2,
+              "legendFormat": "{{ __name__ }}",
               "measurement": "metric.event.failed.event_failed_agent_request.Count",
-              "metric": "",
+              "metric": "failed",
               "policy": "default",
               "prometheusLink": "http://10.196.94.100:9090/graph#%5B%7B%22expr%22%3A%22%22%2C%22range_input%22%3A%2221600s%22%2C%22end_input%22%3A%222015-11-10%2016%3A3%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Afalse%2C%22tab%22%3A0%7D%5D",
               "query": "SELECT mean(\"value\") FROM \"metric.event.failed.event_failed_agent_request.Count\" WHERE $timeFilter GROUP BY time($interval) fill(null)",
@@ -578,67 +605,27 @@
                   }
                 ]
               ],
+              "step": 4,
               "tags": [],
               "target": "alias(derivative(servers.*.metric.event.failed.event_failed_agent_request.Count), 'Agent Request')"
-            },
-            {
-              "calculatedInterval": "20s",
-              "datasourceErrors": {},
-              "dsType": "influxdb",
-              "errors": {},
-              "expr": "",
-              "groupBy": [
-                {
-                  "params": [
-                    "$interval"
-                  ],
-                  "type": "time"
-                },
-                {
-                  "params": [
-                    "null"
-                  ],
-                  "type": "fill"
-                }
-              ],
-              "hide": false,
-              "intervalFactor": 2,
-              "measurement": "metric.event.failed.event_failed_ping.Count",
-              "metric": "",
-              "policy": "default",
-              "prometheusLink": "http://10.196.94.100:9090/graph#%5B%7B%22expr%22%3A%22%22%2C%22range_input%22%3A%2221600s%22%2C%22end_input%22%3A%222015-11-10%2016%3A3%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Afalse%2C%22tab%22%3A0%7D%5D",
-              "query": "SELECT mean(\"value\") FROM \"metric.event.failed.event_failed_ping.Count\" WHERE $timeFilter GROUP BY time($interval) fill(null)",
-              "refId": "B",
-              "resultFormat": "time_series",
-              "select": [
-                [
-                  {
-                    "params": [
-                      "value"
-                    ],
-                    "type": "field"
-                  },
-                  {
-                    "params": [],
-                    "type": "mean"
-                  }
-                ]
-              ],
-              "tags": [],
-              "target": "alias(derivative(servers.*.metric.event.failed.event_failed_compute_instance_deactivate.Count), 'Instance Deactivate')"
             }
           ],
+          "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
           "title": "Failed Events",
           "tooltip": {
             "msResolution": false,
             "shared": true,
+            "sort": 0,
             "value_type": "individual"
           },
           "type": "graph",
           "xaxis": {
-            "show": true
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
           },
           "yaxes": [
             {
@@ -658,39 +645,38 @@
           ]
         }
       ],
-      "title": "Stats 2"
+      "repeat": null,
+      "repeatIteration": null,
+      "repeatRowId": null,
+      "showTitle": false,
+      "title": "Stats 2",
+      "titleSize": "h6"
     },
     {
       "collapse": false,
-      "editable": true,
       "height": "250px",
       "panels": [
         {
           "aliasColors": {},
-          "bars": true,
-          "datasource": "influxdb",
+          "bars": false,
+          "datasource": "${DS_PROMETHEUS}",
           "editable": true,
           "error": false,
           "fill": 2,
-          "grid": {
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
-          },
+          "grid": {},
           "id": 3,
           "legend": {
             "alignAsTable": false,
             "avg": false,
-            "current": false,
+            "current": true,
             "hideEmpty": true,
             "max": false,
             "min": false,
-            "show": true,
-            "total": true,
+            "show": false,
+            "total": false,
             "values": true
           },
-          "lines": false,
+          "lines": true,
           "linewidth": 2,
           "links": [],
           "nullPointMode": "connected",
@@ -699,12 +685,13 @@
           "points": false,
           "renderer": "flot",
           "seriesOverrides": [],
-          "span": 6,
+          "span": 4,
           "stack": true,
           "steppedLine": false,
           "targets": [
             {
               "dsType": "influxdb",
+              "expr": "avg(increase({__name__=~\".*event_request_ping_total\", instance=~\"$node\"}[60m]))",
               "groupBy": [
                 {
                   "params": [
@@ -720,7 +707,11 @@
                 }
               ],
               "hide": false,
+              "interval": "30s",
+              "intervalFactor": 2,
+              "legendFormat": "Ping Requested",
               "measurement": "metric.event.failed.event_failed_ping.Count",
+              "metric": "servers_6b45477adfe6_metric_event_publish_event_publish_ping_reply_Count",
               "policy": "default",
               "query": "SELECT median(\"value\") FROM \"metric.event.failed.event_failed_ping.Count\" WHERE $timeFilter GROUP BY time($interval) fill(null)",
               "refId": "A",
@@ -739,144 +730,27 @@
                   }
                 ]
               ],
+              "step": 60,
               "tags": [],
               "target": "alias(derivative(servers.*.metric.event.request.event_request_ping.Count), 'Request Ping')"
-            },
-            {
-              "calculatedInterval": "20s",
-              "dsType": "influxdb",
-              "errors": {},
-              "expr": "",
-              "groupBy": [
-                {
-                  "params": [
-                    "$interval"
-                  ],
-                  "type": "time"
-                },
-                {
-                  "params": [
-                    "null"
-                  ],
-                  "type": "fill"
-                }
-              ],
-              "hide": false,
-              "intervalFactor": 2,
-              "measurement": "metric.event.publish.event_publish_ping.Count",
-              "metric": "",
-              "policy": "default",
-              "prometheusLink": "http://10.196.94.100:9090/graph#%5B%7B%22expr%22%3A%22%22%2C%22range_input%22%3A%2221600s%22%2C%22end_input%22%3A%222015-11-10%2016%3A9%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Afalse%2C%22tab%22%3A0%7D%5D",
-              "query": "SELECT mean(\"value\") FROM \"metric.event.publish.event_publish_ping.Count\" WHERE $timeFilter GROUP BY time($interval) fill(null)",
-              "refId": "B",
-              "resultFormat": "time_series",
-              "select": [
-                [
-                  {
-                    "params": [
-                      "value"
-                    ],
-                    "type": "field"
-                  },
-                  {
-                    "params": [],
-                    "type": "mean"
-                  }
-                ]
-              ],
-              "tags": [],
-              "target": "alias(derivative(servers.*.metric.event.failed.event_failed_ping.Count), 'Failed Ping')"
-            },
-            {
-              "dsType": "influxdb",
-              "groupBy": [
-                {
-                  "params": [
-                    "$interval"
-                  ],
-                  "type": "time"
-                },
-                {
-                  "params": [
-                    "null"
-                  ],
-                  "type": "fill"
-                }
-              ],
-              "hide": false,
-              "measurement": "metric.event.publish.event_publish_ping_reply.Count",
-              "policy": "default",
-              "query": "SELECT mean(\"value\") FROM \"metric.event.publish.event_publish_ping_reply.Count\" WHERE $timeFilter GROUP BY time($interval) fill(null)",
-              "refId": "C",
-              "resultFormat": "time_series",
-              "select": [
-                [
-                  {
-                    "params": [
-                      "value"
-                    ],
-                    "type": "field"
-                  },
-                  {
-                    "params": [],
-                    "type": "mean"
-                  }
-                ]
-              ],
-              "tags": [],
-              "target": "alias(derivative(servers.*.metric.event.publish.event_publish_ping.Count), 'Publish Ping')"
-            },
-            {
-              "dsType": "influxdb",
-              "groupBy": [
-                {
-                  "params": [
-                    "$interval"
-                  ],
-                  "type": "time"
-                },
-                {
-                  "params": [
-                    "null"
-                  ],
-                  "type": "fill"
-                }
-              ],
-              "hide": false,
-              "measurement": "metric.event.request.event_request_ping.Count",
-              "policy": "default",
-              "query": "SELECT mean(\"value\") FROM \"metric.event.request.event_request_ping.Count\" WHERE $timeFilter GROUP BY time($interval) fill(null)",
-              "refId": "D",
-              "resultFormat": "time_series",
-              "select": [
-                [
-                  {
-                    "params": [
-                      "value"
-                    ],
-                    "type": "field"
-                  },
-                  {
-                    "params": [],
-                    "type": "mean"
-                  }
-                ]
-              ],
-              "tags": [],
-              "target": "alias(derivative(servers.*.metric.event.publish.event_publish_ping_reply.Count), 'Publish Ping Reply')"
             }
           ],
+          "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
           "title": "Ping Overview",
           "tooltip": {
             "msResolution": false,
             "shared": true,
+            "sort": 0,
             "value_type": "individual"
           },
           "type": "graph",
           "xaxis": {
-            "show": true
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
           },
           "yaxes": [
             {
@@ -896,28 +770,97 @@
           ]
         },
         {
+          "cacheTimeout": null,
+          "colorBackground": false,
+          "colorValue": true,
+          "colors": [
+            "rgba(50, 172, 45, 0.97)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(245, 54, 54, 0.9)"
+          ],
+          "datasource": "${DS_PROMETHEUS}",
+          "format": "percent",
+          "gauge": {
+            "maxValue": 100,
+            "minValue": 0,
+            "show": false,
+            "thresholdLabels": false,
+            "thresholdMarkers": true
+          },
+          "id": 17,
+          "interval": null,
+          "links": [],
+          "mappingType": 1,
+          "mappingTypes": [
+            {
+              "name": "value to text",
+              "value": 1
+            },
+            {
+              "name": "range to text",
+              "value": 2
+            }
+          ],
+          "maxDataPoints": 100,
+          "nullPointMode": "connected",
+          "nullText": null,
+          "postfix": "",
+          "postfixFontSize": "50%",
+          "prefix": "",
+          "prefixFontSize": "50%",
+          "rangeMaps": [
+            {
+              "from": "null",
+              "text": "N/A",
+              "to": "null"
+            }
+          ],
+          "span": 4,
+          "sparkline": {
+            "fillColor": "rgba(31, 118, 189, 0.18)",
+            "full": false,
+            "lineColor": "rgb(31, 120, 193)",
+            "show": false
+          },
+          "targets": [
+            {
+              "expr": "(increase({__name__=~\".*event_request_ping_total\"}[60m]) - increase({__name__=~\".*failed_event_failed_ping_total\"}[60m])) / increase({__name__=~\".*event_request_ping_total\"}[60m]) *100",
+              "intervalFactor": 2,
+              "refId": "A",
+              "step": 60
+            }
+          ],
+          "thresholds": "90:99",
+          "title": "Ping Success Ratio",
+          "type": "singlestat",
+          "valueFontSize": "80%",
+          "valueMaps": [
+            {
+              "op": "=",
+              "text": "N/A",
+              "value": "null"
+            }
+          ],
+          "valueName": "avg"
+        },
+        {
           "aliasColors": {},
           "bars": false,
-          "datasource": "influxdb",
+          "datasource": "${DS_PROMETHEUS}",
           "editable": true,
           "error": false,
           "fill": 1,
-          "grid": {
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
-          },
+          "grid": {},
           "id": 4,
           "legend": {
             "avg": false,
-            "current": false,
+            "current": true,
             "hideEmpty": true,
             "max": false,
             "min": false,
-            "show": true,
+            "show": false,
             "total": false,
-            "values": false
+            "values": true
           },
           "lines": true,
           "linewidth": 2,
@@ -928,7 +871,7 @@
           "points": false,
           "renderer": "flot",
           "seriesOverrides": [],
-          "span": 6,
+          "span": 4,
           "stack": false,
           "steppedLine": false,
           "targets": [
@@ -936,7 +879,7 @@
               "calculatedInterval": "1m",
               "dsType": "influxdb",
               "errors": {},
-              "expr": "",
+              "expr": "{__name__=~\".*metric_process.*total\", instance=~\"$node\"} > 0",
               "groupBy": [
                 {
                   "params": [
@@ -953,8 +896,9 @@
               ],
               "hide": false,
               "intervalFactor": 2,
+              "legendFormat": "{{ __name__ }}",
               "measurement": "thread_pool.process.RejectedExecutionCount",
-              "metric": "",
+              "metric": "process",
               "policy": "default",
               "prometheusLink": "http://10.196.94.100:9090/graph#%5B%7B%22expr%22%3A%22%22%2C%22range_input%22%3A%2221600s%22%2C%22end_input%22%3A%222015-11-10%2016%3A15%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Afalse%2C%22tab%22%3A0%7D%5D",
               "query": "SELECT mean(\"value\") FROM \"thread_pool.process.RejectedExecutionCount\" WHERE $timeFilter GROUP BY time($interval) fill(null)",
@@ -974,99 +918,27 @@
                   }
                 ]
               ],
+              "step": 10,
               "tags": [],
               "target": "derivative(servers.*.metric.process_server.process_execution_process_already_in_progress.Count)"
-            },
-            {
-              "dsType": "influxdb",
-              "groupBy": [
-                {
-                  "params": [
-                    "$interval"
-                  ],
-                  "type": "time"
-                },
-                {
-                  "params": [
-                    "null"
-                  ],
-                  "type": "fill"
-                }
-              ],
-              "hide": false,
-              "measurement": "thread_pool.process.ActiveCount",
-              "policy": "default",
-              "query": "SELECT mean(\"value\") FROM \"thread_pool.process.ActiveCount\" WHERE $timeFilter GROUP BY time($interval) fill(null)",
-              "refId": "B",
-              "resultFormat": "time_series",
-              "select": [
-                [
-                  {
-                    "params": [
-                      "value"
-                    ],
-                    "type": "field"
-                  },
-                  {
-                    "params": [],
-                    "type": "mean"
-                  }
-                ]
-              ],
-              "tags": [],
-              "target": "derivative(servers.*.metric.process_server.process_execution_resource_busy.Count)"
-            },
-            {
-              "dsType": "influxdb",
-              "groupBy": [
-                {
-                  "params": [
-                    "$interval"
-                  ],
-                  "type": "time"
-                },
-                {
-                  "params": [
-                    "null"
-                  ],
-                  "type": "fill"
-                }
-              ],
-              "hide": false,
-              "measurement": "metric.process_server.process_execution_resource_busy.Count",
-              "policy": "default",
-              "query": "SELECT mean(\"value\") FROM \"metric.process_server.process_execution_resource_busy.Count\" WHERE $timeFilter GROUP BY time($interval) fill(null)",
-              "refId": "C",
-              "resultFormat": "time_series",
-              "select": [
-                [
-                  {
-                    "params": [
-                      "value"
-                    ],
-                    "type": "field"
-                  },
-                  {
-                    "params": [],
-                    "type": "mean"
-                  }
-                ]
-              ],
-              "tags": [],
-              "target": "derivative(servers.*.metric.process_server.process_execution_timeout.Count)"
             }
           ],
+          "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
           "title": "Process Execution",
           "tooltip": {
             "msResolution": false,
             "shared": true,
+            "sort": 0,
             "value_type": "cumulative"
           },
           "type": "graph",
           "xaxis": {
-            "show": true
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
           },
           "yaxes": [
             {
@@ -1086,27 +958,25 @@
           ]
         }
       ],
-      "title": "Stats 3"
+      "repeat": null,
+      "repeatIteration": null,
+      "repeatRowId": null,
+      "showTitle": false,
+      "title": "Stats 3",
+      "titleSize": "h6"
     },
     {
       "collapse": false,
-      "editable": true,
       "height": "250px",
       "panels": [
         {
           "aliasColors": {},
           "bars": true,
-          "datasource": "influxdb",
+          "datasource": "${DS_PROMETHEUS}",
           "editable": true,
           "error": false,
           "fill": 1,
-          "grid": {
-            "threshold1": null,
-            "threshold1Color": "rgba(27, 43, 216, 0.28)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)",
-            "thresholdLine": false
-          },
+          "grid": {},
           "id": 5,
           "legend": {
             "avg": false,
@@ -1114,7 +984,7 @@
             "hideEmpty": true,
             "max": false,
             "min": false,
-            "show": true,
+            "show": false,
             "total": false,
             "values": false
           },
@@ -1135,7 +1005,7 @@
               "calculatedInterval": "2s",
               "dsType": "influxdb",
               "errors": {},
-              "expr": "",
+              "expr": "cattle_database_MaxActive{instance=~\"$node\"}",
               "groupBy": [
                 {
                   "params": [
@@ -1152,7 +1022,7 @@
               ],
               "intervalFactor": 2,
               "measurement": "database.MaxActive",
-              "metric": "",
+              "metric": "database_MaxActive",
               "policy": "default",
               "prometheusLink": "http://10.196.94.100:9090/graph#%5B%7B%22expr%22%3A%22%22%2C%22range_input%22%3A%223600s%22%2C%22end_input%22%3A%222015-11-10%2016%3A20%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Afalse%2C%22tab%22%3A0%7D%5D",
               "query": "SELECT mean(\"value\") FROM \"database.MaxActive\" WHERE $timeFilter GROUP BY time($interval) fill(null)",
@@ -1172,110 +1042,42 @@
                   }
                 ]
               ],
+              "step": 10,
               "tags": [],
               "target": "aliasByMetric(servers.*.database.NumActive)",
               "textEditor": false
             },
             {
-              "calculatedInterval": "2s",
-              "dsType": "influxdb",
-              "errors": {},
-              "expr": "",
-              "groupBy": [
-                {
-                  "params": [
-                    "$interval"
-                  ],
-                  "type": "time"
-                },
-                {
-                  "params": [
-                    "null"
-                  ],
-                  "type": "fill"
-                }
-              ],
+              "expr": "cattle_database_NumActive{instance=~\"$node\"}",
               "intervalFactor": 2,
-              "measurement": "database.NumActive",
-              "metric": "",
-              "policy": "default",
-              "prometheusLink": "http://10.196.94.100:9090/graph#%5B%7B%22expr%22%3A%22%22%2C%22range_input%22%3A%223600s%22%2C%22end_input%22%3A%222015-11-10%2016%3A20%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Afalse%2C%22tab%22%3A0%7D%5D",
-              "query": "SELECT mean(\"value\") FROM \"database.NumActive\" WHERE $timeFilter GROUP BY time($interval) fill(null)",
+              "metric": "database_NumActive",
               "refId": "B",
-              "resultFormat": "time_series",
-              "select": [
-                [
-                  {
-                    "params": [
-                      "value"
-                    ],
-                    "type": "field"
-                  },
-                  {
-                    "params": [],
-                    "type": "mean"
-                  }
-                ]
-              ],
-              "tags": [],
-              "target": "aliasByMetric(servers.*.database.NumIdle)"
+              "step": 10
             },
             {
-              "calculatedInterval": "2s",
-              "dsType": "influxdb",
-              "errors": {},
-              "expr": "",
-              "groupBy": [
-                {
-                  "params": [
-                    "$interval"
-                  ],
-                  "type": "time"
-                },
-                {
-                  "params": [
-                    "null"
-                  ],
-                  "type": "fill"
-                }
-              ],
+              "expr": "cattle_database_NumIdle{instance=~\"$node\"}",
               "intervalFactor": 2,
-              "measurement": "database.NumIdle",
-              "metric": "",
-              "policy": "default",
-              "prometheusLink": "http://10.196.94.100:9090/graph#%5B%7B%22expr%22%3A%22%22%2C%22range_input%22%3A%223600s%22%2C%22end_input%22%3A%222015-11-10%2016%3A20%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Afalse%2C%22tab%22%3A0%7D%5D",
-              "query": "SELECT mean(\"value\") FROM \"database.NumIdle\" WHERE $timeFilter GROUP BY time($interval) fill(null)",
+              "metric": "database_NumIdle",
               "refId": "C",
-              "resultFormat": "time_series",
-              "select": [
-                [
-                  {
-                    "params": [
-                      "value"
-                    ],
-                    "type": "field"
-                  },
-                  {
-                    "params": [],
-                    "type": "mean"
-                  }
-                ]
-              ],
-              "tags": [],
-              "target": "aliasByMetric(servers.*.database.NumIdle)"
+              "step": 10
             }
           ],
+          "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
           "title": "DB Stats",
           "tooltip": {
             "msResolution": false,
             "shared": true,
+            "sort": 0,
             "value_type": "cumulative"
           },
           "type": "graph",
           "xaxis": {
-            "show": true
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
           },
           "yaxes": [
             {
@@ -1299,16 +1101,11 @@
         {
           "aliasColors": {},
           "bars": false,
-          "datasource": "influxdb",
+          "datasource": "${DS_PROMETHEUS}",
           "editable": true,
           "error": false,
           "fill": 1,
-          "grid": {
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
-          },
+          "grid": {},
           "id": 6,
           "legend": {
             "avg": false,
@@ -1316,7 +1113,7 @@
             "hideEmpty": true,
             "max": false,
             "min": false,
-            "show": true,
+            "show": false,
             "total": false,
             "values": false
           },
@@ -1337,7 +1134,7 @@
               "calculatedInterval": "2s",
               "dsType": "influxdb",
               "errors": {},
-              "expr": "",
+              "expr": "{__name__=~\"cattle_thread_pool.*\",  instance=~\"$node\"}",
               "groupBy": [
                 {
                   "params": [
@@ -1353,8 +1150,9 @@
                 }
               ],
               "intervalFactor": 2,
+              "legendFormat": "",
               "measurement": "thread_pool.core.ActiveCount",
-              "metric": "",
+              "metric": "thread",
               "policy": "default",
               "prometheusLink": "http://10.196.94.100:9090/graph#%5B%7B%22expr%22%3A%22%22%2C%22range_input%22%3A%223600s%22%2C%22end_input%22%3A%222015-11-10%2016%3A21%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Afalse%2C%22tab%22%3A0%7D%5D",
               "query": "SELECT mean(\"value\") FROM \"thread_pool.core.ActiveCount\" WHERE $timeFilter GROUP BY time($interval) fill(null)",
@@ -1374,199 +1172,35 @@
                   }
                 ]
               ],
+              "step": 10,
               "tags": [],
               "target": "aliasByMetric(servers.*.thread_pool.process.ActiveCount)"
             },
             {
-              "calculatedInterval": "2s",
-              "dsType": "influxdb",
-              "errors": {},
-              "expr": "",
-              "groupBy": [
-                {
-                  "params": [
-                    "$interval"
-                  ],
-                  "type": "time"
-                },
-                {
-                  "params": [
-                    "null"
-                  ],
-                  "type": "fill"
-                }
-              ],
+              "expr": "cattle_jvm_thread_Thread_total{instance=~\"$node\"}",
               "intervalFactor": 2,
-              "measurement": "thread_pool.core.RejectedExecutionCount",
-              "metric": "",
-              "policy": "default",
-              "prometheusLink": "http://10.196.94.100:9090/graph#%5B%7B%22expr%22%3A%22%22%2C%22range_input%22%3A%223600s%22%2C%22end_input%22%3A%222015-11-10%2016%3A21%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Afalse%2C%22tab%22%3A0%7D%5D",
-              "query": "SELECT mean(\"value\") FROM \"thread_pool.core.RejectedExecutionCount\" WHERE $timeFilter GROUP BY time($interval) fill(null)",
-              "refId": "C",
-              "resultFormat": "time_series",
-              "select": [
-                [
-                  {
-                    "params": [
-                      "value"
-                    ],
-                    "type": "field"
-                  },
-                  {
-                    "params": [],
-                    "type": "mean"
-                  }
-                ]
-              ],
-              "tags": [],
-              "target": "aliasByMetric(servers.*.thread_pool.process.LargestPoolSize)"
-            },
-            {
-              "calculatedInterval": "2s",
-              "dsType": "influxdb",
-              "errors": {},
-              "expr": "",
-              "groupBy": [
-                {
-                  "params": [
-                    "$interval"
-                  ],
-                  "type": "time"
-                },
-                {
-                  "params": [
-                    "null"
-                  ],
-                  "type": "fill"
-                }
-              ],
-              "intervalFactor": 2,
-              "measurement": "thread_pool.process.ActiveCount",
-              "metric": "",
-              "policy": "default",
-              "prometheusLink": "http://10.196.94.100:9090/graph#%5B%7B%22expr%22%3A%22%22%2C%22range_input%22%3A%223600s%22%2C%22end_input%22%3A%222015-11-10%2016%3A21%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Afalse%2C%22tab%22%3A0%7D%5D",
-              "query": "SELECT mean(\"value\") FROM \"thread_pool.process.ActiveCount\" WHERE $timeFilter GROUP BY time($interval) fill(null)",
-              "refId": "D",
-              "resultFormat": "time_series",
-              "select": [
-                [
-                  {
-                    "params": [
-                      "value"
-                    ],
-                    "type": "field"
-                  },
-                  {
-                    "params": [],
-                    "type": "mean"
-                  }
-                ]
-              ],
-              "tags": [],
-              "target": "aliasByMetric(servers.*.thread_pool.process.LargestPoolSize)"
-            },
-            {
-              "calculatedInterval": "2s",
-              "dsType": "influxdb",
-              "errors": {},
-              "expr": "",
-              "groupBy": [
-                {
-                  "params": [
-                    "$interval"
-                  ],
-                  "type": "time"
-                },
-                {
-                  "params": [
-                    "null"
-                  ],
-                  "type": "fill"
-                }
-              ],
-              "intervalFactor": 2,
-              "measurement": "jvm.thread.ThreadCount",
-              "metric": "",
-              "policy": "default",
-              "prometheusLink": "http://10.196.94.100:9090/graph#%5B%7B%22expr%22%3A%22%22%2C%22range_input%22%3A%223600s%22%2C%22end_input%22%3A%222015-11-10%2016%3A21%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Afalse%2C%22tab%22%3A0%7D%5D",
-              "query": "SELECT mean(\"value\") FROM \"jvm.thread.ThreadCount\" WHERE $timeFilter GROUP BY time($interval) fill(null)",
-              "rawQuery": false,
-              "refId": "E",
-              "resultFormat": "time_series",
-              "select": [
-                [
-                  {
-                    "params": [
-                      "value"
-                    ],
-                    "type": "field"
-                  },
-                  {
-                    "params": [],
-                    "type": "mean"
-                  }
-                ]
-              ],
-              "tags": [],
-              "target": "aliasByMetric(servers.*.thread_pool.process.LargestPoolSize)"
-            },
-            {
-              "calculatedInterval": "2s",
-              "dsType": "influxdb",
-              "errors": {},
-              "expr": "",
-              "groupBy": [
-                {
-                  "params": [
-                    "$interval"
-                  ],
-                  "type": "time"
-                },
-                {
-                  "params": [
-                    "null"
-                  ],
-                  "type": "fill"
-                }
-              ],
-              "intervalFactor": 2,
-              "measurement": "thread_pool.process.RejectedExecutionCount",
-              "metric": "",
-              "policy": "default",
-              "prometheusLink": "http://10.196.94.100:9090/graph#%5B%7B%22expr%22%3A%22%22%2C%22range_input%22%3A%223600s%22%2C%22end_input%22%3A%222015-11-10%2016%3A21%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Afalse%2C%22tab%22%3A0%7D%5D",
-              "query": "SELECT mean(\"value\") FROM \"thread_pool.process.RejectedExecutionCount\" WHERE $timeFilter GROUP BY time($interval) fill(null)",
-              "rawQuery": false,
-              "refId": "F",
-              "resultFormat": "time_series",
-              "select": [
-                [
-                  {
-                    "params": [
-                      "value"
-                    ],
-                    "type": "field"
-                  },
-                  {
-                    "params": [],
-                    "type": "mean"
-                  }
-                ]
-              ],
-              "tags": [],
-              "target": "aliasByMetric(servers.*.thread_pool.process.LargestPoolSize)"
+              "legendFormat": "",
+              "metric": "jvm_thread_ThreadCount",
+              "refId": "B",
+              "step": 10
             }
           ],
+          "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
           "title": "Thread Stats",
           "tooltip": {
             "msResolution": false,
             "shared": true,
+            "sort": 0,
             "value_type": "cumulative"
           },
           "type": "graph",
           "xaxis": {
-            "show": true
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
           },
           "yaxes": [
             {
@@ -1586,26 +1220,25 @@
           ]
         }
       ],
-      "title": "Stats 4"
+      "repeat": null,
+      "repeatIteration": null,
+      "repeatRowId": null,
+      "showTitle": false,
+      "title": "Stats 4",
+      "titleSize": "h6"
     },
     {
       "collapse": false,
-      "editable": true,
       "height": "250px",
       "panels": [
         {
           "aliasColors": {},
           "bars": false,
-          "datasource": "influxdb",
+          "datasource": "${DS_PROMETHEUS}",
           "editable": true,
           "error": false,
           "fill": 1,
-          "grid": {
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
-          },
+          "grid": {},
           "id": 9,
           "legend": {
             "avg": false,
@@ -1634,7 +1267,7 @@
               "calculatedInterval": "2s",
               "dsType": "influxdb",
               "errors": {},
-              "expr": "",
+              "expr": "cattle_jvm_thread_Thread_total{instance=~\"$node\"}",
               "groupBy": [
                 {
                   "params": [
@@ -1651,7 +1284,7 @@
               ],
               "intervalFactor": 2,
               "measurement": "jvm.thread.ThreadCount",
-              "metric": "",
+              "metric": "thre",
               "policy": "default",
               "prometheusLink": "http://10.196.94.100:9090/graph#%5B%7B%22expr%22%3A%22%22%2C%22range_input%22%3A%223601s%22%2C%22end_input%22%3A%222015-11-10%2016%3A29%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Afalse%2C%22tab%22%3A0%7D%5D",
               "query": "SELECT mean(\"value\") FROM \"jvm.thread.ThreadCount\" WHERE $timeFilter GROUP BY time($interval) fill(null)",
@@ -1671,21 +1304,27 @@
                   }
                 ]
               ],
+              "step": 4,
               "tags": [],
               "target": "servers.*.jvm.thread.ThreadCount"
             }
           ],
+          "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
           "title": "JVM Thread Count",
           "tooltip": {
             "msResolution": false,
             "shared": true,
+            "sort": 0,
             "value_type": "cumulative"
           },
           "type": "graph",
           "xaxis": {
-            "show": true
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
           },
           "yaxes": [
             {
@@ -1706,14 +1345,14 @@
         },
         {
           "cacheTimeout": null,
-          "colorBackground": true,
-          "colorValue": false,
+          "colorBackground": false,
+          "colorValue": true,
           "colors": [
             "rgba(50, 172, 45, 0.97)",
             "rgba(237, 129, 40, 0.89)",
             "rgba(245, 54, 54, 0.9)"
           ],
-          "datasource": "influxdb",
+          "datasource": "${DS_PROMETHEUS}",
           "editable": true,
           "error": false,
           "format": "none",
@@ -1727,6 +1366,17 @@
           "id": 13,
           "interval": null,
           "links": [],
+          "mappingType": 1,
+          "mappingTypes": [
+            {
+              "name": "value to text",
+              "value": 1
+            },
+            {
+              "name": "range to text",
+              "value": 2
+            }
+          ],
           "maxDataPoints": 100,
           "nullPointMode": "connected",
           "nullText": null,
@@ -1734,6 +1384,13 @@
           "postfixFontSize": "50%",
           "prefix": "",
           "prefixFontSize": "50%",
+          "rangeMaps": [
+            {
+              "from": "null",
+              "text": "N/A",
+              "to": "null"
+            }
+          ],
           "span": 4,
           "sparkline": {
             "fillColor": "rgba(31, 118, 189, 0.18)",
@@ -1746,7 +1403,7 @@
               "calculatedInterval": "20s",
               "dsType": "influxdb",
               "errors": {},
-              "expr": "",
+              "expr": "cattle_jvm_os_OpenFileDescriptor_total{instance=~\"$node\"}",
               "groupBy": [
                 {
                   "params": [
@@ -1763,7 +1420,7 @@
               ],
               "intervalFactor": 2,
               "measurement": "jvm.os.OpenFileDescriptorCount",
-              "metric": "",
+              "metric": "jvm_os_OpenFileDescriptorCount",
               "policy": "default",
               "prometheusLink": "http://10.196.94.100:9090/graph#%5B%7B%22expr%22%3A%22%22%2C%22range_input%22%3A%22900s%22%2C%22end_input%22%3A%222015-11-11%2010%3A37%22%2C%22step_input%22%3A%22%22%2C%22tab%22%3A0%7D%5D",
               "query": "SELECT mean(\"value\") FROM \"jvm.os.OpenFileDescriptorCount\" WHERE $timeFilter GROUP BY time($interval) fill(null)",
@@ -1783,6 +1440,7 @@
                   }
                 ]
               ],
+              "step": 60,
               "tags": [],
               "target": "servers.*.jvm.os.OpenFileDescriptorCount"
             }
@@ -1801,27 +1459,26 @@
           "valueName": "avg"
         }
       ],
-      "title": "Stats 5"
+      "repeat": null,
+      "repeatIteration": null,
+      "repeatRowId": null,
+      "showTitle": false,
+      "title": "Stats 5",
+      "titleSize": "h6"
     },
     {
       "collapse": false,
-      "editable": true,
       "height": "250px",
       "panels": [
         {
           "aliasColors": {},
           "bars": false,
-          "datasource": "influxdb",
+          "datasource": "${DS_PROMETHEUS}",
           "decimals": 0,
           "editable": true,
           "error": false,
           "fill": 1,
-          "grid": {
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
-          },
+          "grid": {},
           "id": 11,
           "legend": {
             "avg": false,
@@ -1841,7 +1498,7 @@
           "points": false,
           "renderer": "flot",
           "seriesOverrides": [],
-          "span": 8,
+          "span": 12,
           "stack": false,
           "steppedLine": false,
           "targets": [
@@ -1849,7 +1506,7 @@
               "calculatedInterval": "20s",
               "dsType": "influxdb",
               "errors": {},
-              "expr": "",
+              "expr": "cattle_metric_process_server_process_execution_timeout_total{instance=~\"$node\"}",
               "groupBy": [
                 {
                   "params": [
@@ -1867,9 +1524,9 @@
               "hide": false,
               "intervalFactor": 2,
               "measurement": "metric.process_server.process_execution_timeout.Count",
-              "metric": "",
+              "metric": "metric_process_server_process_execution_timeout_Count",
               "policy": "default",
-              "prometheusLink": "http://10.196.94.100:9090/graph#%5B%7B%22expr%22%3A%22%22%2C%22range_input%22%3A%2221600s%22%2C%22end_input%22%3A%222015-11-10%2016%3A9%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Afalse%2C%22tab%22%3A0%7D%5D",
+              "prometheusLink": "http://prometheus:9090/graph#%5B%7B%22expr%22%3A%22%22%2C%22range_input%22%3A%2221600s%22%2C%22end_input%22%3A%222015-11-10%2016%3A9%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Afalse%2C%22tab%22%3A0%7D%5D",
               "query": "SELECT mean(\"value\") FROM \"metric.process_server.process_execution_timeout.Count\" WHERE $timeFilter GROUP BY time($interval) fill(null)",
               "refId": "A",
               "resultFormat": "time_series",
@@ -1887,21 +1544,27 @@
                   }
                 ]
               ],
+              "step": 4,
               "tags": [],
               "target": "alias(derivative(servers.*.metric.process_server.process_execution_timeout.Count), 'Timeouts')"
             }
           ],
+          "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
           "title": "Timeout Events",
           "tooltip": {
             "msResolution": false,
             "shared": true,
+            "sort": 0,
             "value_type": "cumulative"
           },
           "type": "graph",
           "xaxis": {
-            "show": true
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
           },
           "yaxes": [
             {
@@ -1913,117 +1576,6 @@
             },
             {
               "format": "none",
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": true
-            }
-          ]
-        },
-        {
-          "aliasColors": {},
-          "bars": false,
-          "datasource": "influxdb",
-          "editable": true,
-          "error": false,
-          "fill": 1,
-          "grid": {
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
-          },
-          "id": 14,
-          "legend": {
-            "avg": false,
-            "current": false,
-            "hideEmpty": true,
-            "max": false,
-            "min": false,
-            "show": false,
-            "total": false,
-            "values": false
-          },
-          "lines": true,
-          "linewidth": 2,
-          "links": [],
-          "nullPointMode": "connected",
-          "percentage": false,
-          "pointradius": 5,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [],
-          "span": 4,
-          "stack": false,
-          "steppedLine": false,
-          "targets": [
-            {
-              "calculatedInterval": "2s",
-              "dsType": "influxdb",
-              "errors": {},
-              "expr": "",
-              "groupBy": [
-                {
-                  "params": [
-                    "$interval"
-                  ],
-                  "type": "time"
-                },
-                {
-                  "params": [
-                    "null"
-                  ],
-                  "type": "fill"
-                }
-              ],
-              "intervalFactor": 2,
-              "measurement": "metric.event.time.event_time_ping.Mean",
-              "metric": "",
-              "policy": "default",
-              "prometheusLink": "http://10.196.94.100:9090/graph#%5B%7B%22expr%22%3A%22%22%2C%22range_input%22%3A%22900s%22%2C%22end_input%22%3A%222015-11-11%2010%3A39%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Afalse%2C%22tab%22%3A0%7D%5D",
-              "query": "SELECT mean(\"value\") FROM \"metric.event.time.event_time_ping.Mean\" WHERE $timeFilter GROUP BY time($interval) fill(null)",
-              "refId": "A",
-              "resultFormat": "time_series",
-              "select": [
-                [
-                  {
-                    "params": [
-                      "value"
-                    ],
-                    "type": "field"
-                  },
-                  {
-                    "params": [],
-                    "type": "mean"
-                  }
-                ]
-              ],
-              "tags": [],
-              "target": "servers.*.thread_pool.process.ActiveCount"
-            }
-          ],
-          "timeFrom": null,
-          "timeShift": null,
-          "title": "Mean Ping",
-          "tooltip": {
-            "msResolution": false,
-            "shared": true,
-            "value_type": "cumulative"
-          },
-          "type": "graph",
-          "xaxis": {
-            "show": true
-          },
-          "yaxes": [
-            {
-              "format": "short",
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": true
-            },
-            {
-              "format": "short",
               "logBase": 1,
               "max": null,
               "min": null,
@@ -2032,9 +1584,43 @@
           ]
         }
       ],
-      "title": "Stats 6"
+      "repeat": null,
+      "repeatIteration": null,
+      "repeatRowId": null,
+      "showTitle": false,
+      "title": "Stats 6",
+      "titleSize": "h6"
     }
   ],
+  "schemaVersion": 14,
+  "style": "dark",
+  "tags": [
+    "Rancher"
+  ],
+  "templating": {
+    "list": [
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_PROMETHEUS}",
+        "hide": 0,
+        "includeAll": true,
+        "label": "Host",
+        "multi": true,
+        "name": "node",
+        "options": [],
+        "query": "cattle_database_MaxActive",
+        "refresh": 1,
+        "regex": "/instance=\\\"(.*?)\\\"/",
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      }
+    ]
+  },
   "time": {
     "from": "now-1h",
     "to": "now"
@@ -2070,14 +1656,7 @@
     ],
     "type": "timepicker"
   },
-  "templating": {
-    "list": []
-  },
-  "annotations": {
-    "list": []
-  },
-  "refresh": "5s",
-  "schemaVersion": 12,
-  "version": 18,
-  "links": []
+  "timezone": "browser",
+  "title": "Rancher Stats",
+  "version": 48
 }

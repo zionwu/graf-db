@@ -10818,7 +10818,7 @@
         "current": {},
         "datasource": "${DS_PROMETHEUS}",
         "hide": 0,
-        "includeAll": false,
+        "includeAll": true,
         "label": "Host:",
         "multi": false,
         "name": "node",
